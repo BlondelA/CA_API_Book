@@ -1,4 +1,4 @@
-package com.poc.steps;
+package com.poc.steps.book;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,8 @@ public class BookRestStep {
 	private final TestContext context;
 	private final MockMvc mvc;
 
-	@Quand("on créé un livre contenant le titre suivant : {string}")
+	//TODO -> Gestion de l'auteur
+	@Quand("on créé un livre contenant le titre {string} et l'auteur {string}")
 	public void createBook(String text) throws Exception {
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books").content("{ \"title\":\"" + text + "\" }")
 			.headers(context.getHeaders());
@@ -45,7 +46,8 @@ public class BookRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Quand("on modifie le livre {word} avec le titre {string}")
+	//TODO -> gestion de l'auteur
+	@Quand("on modifie le livre {word} avec l'auteur {string}")
 	public void onModifieLeLivreIdAvecLeMessage(String uuid, String text) throws Exception {
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/books/{id}", uuid).content("{ \"title\":\"" + text + "\" }")
 				.headers(context.getHeaders());
@@ -62,7 +64,7 @@ public class BookRestStep {
 				.andExpect(jsonPath("$.title", is(text)));
 	}
 
-	@Alors("les livres retournés contiennent l'auteur : {string}")
+	@Alors("le livre retourné contient l'auteur : {string}")
 	public void bookHasAutor(String text) throws Exception {
 		context.getResult()
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

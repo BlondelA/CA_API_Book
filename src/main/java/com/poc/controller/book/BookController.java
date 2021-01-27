@@ -1,4 +1,4 @@
-package com.poc.controller;
+package com.poc.controller.book;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poc.controller.dto.BookCreate;
-import com.poc.controller.dto.BookReturn;
-import com.poc.controller.dto.BookUpdate;
+import com.poc.controller.book.dto.BookCreate;
+import com.poc.controller.book.dto.BookReturn;
+import com.poc.controller.book.dto.BookUpdate;
 import com.poc.entity.Book;
 import com.poc.services.BookService;
 

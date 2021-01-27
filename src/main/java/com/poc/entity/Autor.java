@@ -1,6 +1,5 @@
 package com.poc.entity;
 
-import java.util.Date;
 import java.util.UUID;
 
 import lombok.Data;
@@ -15,19 +14,19 @@ import javax.persistence.Lob;
 import org.hibernate.annotations.GenericGenerator;
 
 @Data
-@Entity(name = "books")
-public class Book {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
-	private Long id;
+@Entity(name = "autor")
+public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long id;
 
-	@Column(unique = true)
-	private UUID uuid;
+    @Column(unique = true)
+    private UUID uuid;
 
-	@Lob
-	private String title;
+    @Lob
+    private String FirstName;
 
-	@Lob
-	private String autorUUID;
+    @Lob
+    private String Name;
 }

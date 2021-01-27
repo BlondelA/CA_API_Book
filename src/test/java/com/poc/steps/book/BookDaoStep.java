@@ -1,4 +1,4 @@
-package com.poc.steps;
+package com.poc.steps.book;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class BookDaoStep {
 			var book = new Book();
 			Optional.of("UUID").map(map::get).map(UUID::fromString).ifPresent(book::setUuid);
 			Optional.of("TITLE").map(map::get).ifPresent(book::setTitle);
-			Optional.of("AUTOR").map(map::get).ifPresent(book::setAutor);
+			Optional.of("AUTOR").map(map::get).ifPresent(book::setAutorUUID);
 			bookDao.save(book);
 		});
 	}
@@ -43,12 +43,5 @@ public class BookDaoStep {
 		assertTrue(StreamSupport.stream(bookDao.findAll()
 				.spliterator(), false)
 				.anyMatch(book -> text.equals(book.getTitle())));
-	}
-
-	@Alors("un livre existe avec l'auteur suivant : {string}")
-	public void bookWithAutor(String text) {
-		assertTrue(StreamSupport.stream(bookDao.findAll()
-				.spliterator(), false)
-				.anyMatch(book -> text.equals(book.getAutor())));
 	}
 }

@@ -8,6 +8,7 @@ import java.util.stream.StreamSupport;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.poc.entity.Autor;
 import org.springframework.stereotype.Service;
 
 import com.poc.dao.BookDao;
@@ -24,8 +25,8 @@ public class BookService {
 	}
 
 	/**
-	 * Récupère l'ensemble des publications
-	 * @return un Stream de publications
+	 * Récupère l'ensemble des livres
+	 * @return un Stream de livres
 	 */
 	public Stream<Book> getAllBooks() {
 		return StreamSupport.stream(bookDao.findAll()
@@ -33,19 +34,19 @@ public class BookService {
 	}
 
 	/**
-	 * Récupère une publication
-	 * @param uuid l'identification de la publication
-	 * @return la publication
+	 * Récupère un livre
+	 * @param uuid l'identification du livre
+	 * @return le livre
 	 */
 	public Optional<Book> getBook(UUID uuid) {
 		return bookDao.findByUuid(uuid);
 	}
 
 	/**
-	 * Crée une publication
+	 * Crée un livre
 	 *
-	 * @param book la publication à sauvegarder
-	 * @return la publication
+	 * @param book le livre à sauvegarder
+	 * @return le livre
 	 */
 	public Optional<Book> createBook(Book book) {
 		return Optional.of(book)
@@ -53,10 +54,10 @@ public class BookService {
 	}
 
 	/**
-	 * Modifie une publication
+	 * Modifie un livre
 	 * @param uuid l'identifiant du message
-	 * @param newBook la publication à modifier
-	 * @return la publication
+	 * @param newBook le livre à modifier
+	 * @return le livre
 	 */
 	public Optional<Book> updateBook(UUID uuid, Book newBook) {
 		try {
@@ -67,13 +68,9 @@ public class BookService {
 					.filter(not(String::isBlank))
 					.ifPresent(book::setTitle);
 			Optional.of(newBook)
-					.map(Book::getAutor)
+					.map(Book::getAutorUUID)
 					.filter(not(String::isBlank))
-					.ifPresent(book::setAutor);
-//			Optional.of(newBook)
-//					.map(Book::getDate)
-//					.filter(not(Date::))
-//					.ifPresent(book::setDate);
+					.ifPresent(book::setAutorUUID);
 			return Optional.of(book)
 					.map(bookDao::save);
 		} catch (EntityNotFoundException e) {
