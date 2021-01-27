@@ -1,0 +1,30 @@
+image: afone/gitlab-ci-java-11:latest
+
+stages:
+    - build
+    - test
+
+package_prod:
+    stage: build
+    tags:
+        - test
+    only:
+        - tags
+    script:
+        - mvn versions:set -DnewVersion=$CI_COMMIT_TAG
+        - mvn clean package -Dmaven.test.skip=true -Pafone-prod
+        - mv /builds/papam/ppm-bo/target/papam.jar .
+        - firstTag=$(git tag --sort=-taggerdate | sed -n 1p)
+        - secondTag=$(git tag --sort=-taggerdate | sed -n 2p)
+        - git log ${secondTag}..${firstTag} --oneline > CHANGELOG
+        - sed -i 's/{{POST_MATTERMOST}}/true/g' export.sh
+        - sed -i "s/{{TARGET_APP}}/prod/g" export.sh
+        - sed -i "s/{{TARGET_VERSION}}/$CI_COMMIT_TAG/g" export.sh
+        - zip -j livrable.zip papam.jar CHANGELOG export.sh
+        - curl -k -X POST -F file=@livrable.zip "https://releases.afone.priv/upload/papam/bo/prod?version=$CI_COMMIT_TAG"
+
+testunitaires:
+    stage: test
+    tags:
+        - test
+    script: "mvn -U clean package -Pgitlabci"
