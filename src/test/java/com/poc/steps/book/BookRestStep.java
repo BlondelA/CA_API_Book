@@ -25,11 +25,20 @@ public class BookRestStep {
 	private final TestContext context;
 	private final MockMvc mvc;
 
-	//TODO -> Gestion de l'auteur
 	@Quand("on créé un livre contenant le titre {string} et l'auteur {string}")
+	public void createBook(String titre, String auteur) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books").content("{ \"title\":\"" + titre + "\" \"autor\":\"" + auteur + "\" }")
+			.headers(context.getHeaders());
+
+		context.getRequestAttrs().forEach(request::requestAttr);
+
+		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
+	}
+
+	@Quand("on créé un livre contenant le titre suivant : {string}")
 	public void createBook(String text) throws Exception {
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books").content("{ \"title\":\"" + text + "\" }")
-			.headers(context.getHeaders());
+				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
 
@@ -46,10 +55,19 @@ public class BookRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	//TODO -> gestion de l'auteur
-	@Quand("on modifie le livre {word} avec l'auteur {string}")
-	public void onModifieLeLivreIdAvecLeMessage(String uuid, String text) throws Exception {
+	@Quand("on modifie le livre {word} avec le titre {string}")
+	public void onModifieLeLivreIdAvecLeTitre(String uuid, String text) throws Exception {
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/books/{id}", uuid).content("{ \"title\":\"" + text + "\" }")
+				.headers(context.getHeaders());
+
+		context.getRequestAttrs().forEach(request::requestAttr);
+
+		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
+	}
+
+	@Quand("on modifie le livre {word} avec l'auteur {string}")
+	public void onModifieLeLivreIdAvecLAuteur(String uuid, String text) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/books/{id}", uuid).content("{ \"autor\":\"" + text + "\" }")
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);

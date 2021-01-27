@@ -19,5 +19,5 @@ Fonctionnalité: Créer un livre
       | Le Seigneur des anneaux : La Communauté de l'anneau | 10000000-0000-0000-0000-000000000001 |
 
   Scénario: Livre sans titre
-    Quand on créé un livre contenant le titre suivant : ""
+    Quand on créé un livre contenant le titre suivant : "<titre>"
     Alors la demande échoue avec un code 400

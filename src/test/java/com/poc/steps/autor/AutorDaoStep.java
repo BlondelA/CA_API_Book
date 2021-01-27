@@ -1,10 +1,9 @@
 package com.poc.steps.autor;
 
 import com.poc.dao.AutorDao;
-import com.poc.dao.BookDao;
 import com.poc.entity.Autor;
-import com.poc.entity.Book;
 import io.cucumber.java.fr.Alors;
+import io.cucumber.java.fr.Quand;
 import io.cucumber.java.fr.Soit;
 
 import java.util.List;
@@ -16,26 +15,34 @@ import java.util.stream.StreamSupport;
 import static org.junit.Assert.assertTrue;
 
 public class AutorDaoStep {
-	private final AutorDao autorDao;
+    private final AutorDao autorDao;
 
-	public AutorDaoStep(AutorDao autorDao) {
-		this.autorDao = autorDao;
-	}
+    public AutorDaoStep(AutorDao autorDao) {
+        this.autorDao = autorDao;
+    }
 
-	/**
-	 * @param books la liste des livres sous forme d'un tableau avec les données suivantes :<br/>
-	 *              ID : identifiant de la publication (Long)<br/>
-	 *              TITLE : titre du livre (String)
-	 *              AUTOR : auteur du livre (String)
-	 */
-	@Soit("les auteurs suivants :")
-	public void initBooks(List<Map<String, String>> books) {
-		books.forEach(map -> {
-			var autor = new Autor();
-			Optional.of("UUID").map(map::get).map(UUID::fromString).ifPresent(autor::setUuid);
-			Optional.of("NAME").map(map::get).ifPresent(autor::setName);
-			Optional.of("FIRSTNAME").map(map::get).ifPresent(autor::setFirstName);
-			autorDao.save(autor);
-		});
-	}
+    /**
+     * @param autors la liste des auteurs sous forme d'un tableau avec les données suivantes :<br/>
+     *               ID : identifiant de l'auteur (Long)<br/>
+     *               NAME : nom de l'auteur (String)
+     *               FIRSTNAME : prenom de l'auteur (String)
+     */
+    @Soit("les auteurs suivants :")
+    public void initAutor(List<Map<String, String>> autors) {
+        autors.forEach(map -> {
+            var autor = new Autor();
+            Optional.of("UUID").map(map::get).map(UUID::fromString).ifPresent(autor::setUuid);
+            Optional.of("NAME").map(map::get).ifPresent(autor::setName);
+            Optional.of("FIRSTNAME").map(map::get).ifPresent(autor::setFirstName);
+            autorDao.save(autor);
+        });
+    }
+
+    @Alors("un auteur existe avec le nom suivant : {string}")
+    public void autorWithTitle(String text) {
+        assertTrue(StreamSupport.stream(autorDao.findAll()
+                .spliterator(), false)
+                .anyMatch(autor -> text.equals(autor.getName())));
+    }
+
 }

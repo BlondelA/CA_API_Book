@@ -23,9 +23,9 @@ public class AutorRestStep {
 	private final TestContext context;
 	private final MockMvc mvc;
 
-	@Quand("on créé un livre contenant le titre suivant : {string}")
-	public void createBook(String text) throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books").content("{ \"title\":\"" + text + "\" }")
+	@Quand("on créé un auteur contenant le nom {string} et le prenom {string}")
+	public void createAutor(String nom, String prenom) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/autors").content("{ \"name\":\"" + nom + "\" \"firstname\":\"" + prenom + "\" }")
 			.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -33,9 +33,9 @@ public class AutorRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Quand("on consulte le livre {word}")
-	public void getBook(String uuid) throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/book/{id}", uuid)
+	@Quand("on créé un auteur contenant le nom suivant : {string}")
+	public void createAutor(String nom) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/autors").content("{ \"name\":\"" + nom + "\" }")
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -43,9 +43,9 @@ public class AutorRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Quand("on modifie le livre {word} avec le titre {string}")
-	public void onModifieLeLivreIdAvecLeMessage(String uuid, String text) throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/books/{id}", uuid).content("{ \"title\":\"" + text + "\" }")
+	@Quand("on consulte l'auteur {word}")
+	public void getAutor(String uuid) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/autors/{id}", uuid)
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -53,23 +53,27 @@ public class AutorRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Alors("le livre retourné contient le titre : {string}")
-	public void bookHasTitle(String text) throws Exception {
+
+	@Quand("on modifie l'auteur {word} avec le nom {string}")
+	public void onModifieLAuteurIdAvecLeNom(String uuid, String text) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/autors/{id}", uuid).content("{ \"name\":\"" + text + "\" }")
+				.headers(context.getHeaders());
+
+		context.getRequestAttrs().forEach(request::requestAttr);
+
+		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
+	}
+
+	@Alors("l'auteur retourné contient le nom : {string}")
+	public void autorHasAutor(String text) throws Exception {
 		context.getResult()
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.title", is(text)));
+				.andExpect(jsonPath("$.name", is(text)));
 	}
 
-	@Alors("les livres retournés contiennent l'auteur : {string}")
-	public void bookHasAutor(String text) throws Exception {
-		context.getResult()
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.autor", is(text)));
-	}
-
-	@Quand("on consulte la liste des livres")
-	public void onConsulteLaListeDesLivres() throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/books")
+	@Quand("on consulte la liste des auteurs")
+	public void onConsulteLaListeDesAuteurs() throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/autors")
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -77,16 +81,18 @@ public class AutorRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Et("la liste retournée contient l'ensemble des livres suivants :")
-	public void laListeRetourneeContientLEnsembleDesLivresSuivants(List<Map<String, String>> books)
+	@Et("la liste retournée contient l'ensemble des auteurs suivants :")
+	public void laListeRetourneeContientLEnsembleDesAuteursSuivants(List<Map<String, String>> autors)
 			throws Exception {
 		ResultActions result = context.getResult().andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
-		String[] uuids = books.stream().map(map -> map.get("uuid")).toArray(String[]::new);
-		String[] titles = books.stream().map(map -> map.get("title")).toArray(String[]::new);
+		String[] uuids = autors.stream().map(map -> map.get("uuid")).toArray(String[]::new);
+		String[] names = autors.stream().map(map -> map.get("name")).toArray(String[]::new);
+		String[] firstnames = autors.stream().map(map -> map.get("firstnames")).toArray(String[]::new);
 
 		result.andExpect(jsonPath("$[*].uuid", contains(uuids)));
-		result.andExpect(jsonPath("$[*].title", contains(titles)));
+		result.andExpect(jsonPath("$[*].name", contains(names)));
+		result.andExpect(jsonPath("$[*].firstname", contains(firstnames)));
 	}
 }

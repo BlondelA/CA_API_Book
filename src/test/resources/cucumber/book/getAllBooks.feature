@@ -12,7 +12,7 @@ Fonctionnalité: Consulter tous les livres
       | UUID                                 | NAME    | FIRSTNAME |
       | 10000000-0000-0000-0000-000000000001 | Tolkien | J. R. R   |
 
-  Scénario: Consultation des publications
+  Scénario: Consultation des livres
     Quand on consulte la liste des livres
     Alors la demande réussit
     Et la liste retournée contient l'ensemble des livres suivants :
