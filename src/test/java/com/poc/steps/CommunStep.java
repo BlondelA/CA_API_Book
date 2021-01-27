@@ -1,12 +1,9 @@
 package com.poc.steps;
 
-import org.springframework.http.MediaType;
-
 import com.poc.common.TestContext;
 
 import io.cucumber.java.fr.Alors;
 
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class CommunStep {

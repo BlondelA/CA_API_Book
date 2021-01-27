@@ -21,13 +21,13 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AllArgsConstructor
-public class PostRestStep {
+public class BookRestStep {
 	private final TestContext context;
 	private final MockMvc mvc;
 
-	@Quand("on créé une publication contenant le texte suivant : {string}")
-	public void createPost(String text) throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/posts").content("{ \"message\":\"" + text + "\" }")
+	@Quand("on créé un livre contenant le titre suivant : {string}")
+	public void createBook(String text) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books").content("{ \"title\":\"" + text + "\" }")
 			.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -35,9 +35,9 @@ public class PostRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Quand("on consulte la publication {word}")
-	public void getPost(String uuid) throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/posts/{id}", uuid)
+	@Quand("on consulte le livre {word}")
+	public void getBook(String uuid) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/book/{id}", uuid)
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -45,9 +45,9 @@ public class PostRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Quand("on modifie la publication {word} avec le message {string}")
-	public void onModifieLaPublicationIdAvecLeMessage(String uuid, String text) throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/posts/{id}", uuid).content("{ \"message\":\"" + text + "\" }")
+	@Quand("on modifie le livre {word} avec le titre {string}")
+	public void onModifieLeLivreIdAvecLeMessage(String uuid, String text) throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch("/books/{id}", uuid).content("{ \"title\":\"" + text + "\" }")
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -55,16 +55,23 @@ public class PostRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Alors("la publication retournée contient le message : {string}")
-	public void postHasText(String text) throws Exception {
+	@Alors("le livre retourné contient le titre : {string}")
+	public void bookHasTitle(String text) throws Exception {
 		context.getResult()
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.message", is(text)));
+				.andExpect(jsonPath("$.title", is(text)));
 	}
 
-	@Quand("on consulte la liste des publications")
-	public void onConsulteLaListeDesPublications() throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/posts")
+	@Alors("les livres retournés contiennent l'auteur : {string}")
+	public void bookHasAutor(String text) throws Exception {
+		context.getResult()
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.autor", is(text)));
+	}
+
+	@Quand("on consulte la liste des livres")
+	public void onConsulteLaListeDesLivres() throws Exception {
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/books")
 				.headers(context.getHeaders());
 
 		context.getRequestAttrs().forEach(request::requestAttr);
@@ -72,16 +79,16 @@ public class PostRestStep {
 		context.setResult(mvc.perform(request.contentType(MediaType.APPLICATION_JSON)));
 	}
 
-	@Et("la liste retournée contient l'ensemble des publications suivantes :")
-	public void laPublicationRetourneeContientLEnsembleDesPublicationsSuivantes(List<Map<String, String>> posts)
+	@Et("la liste retournée contient l'ensemble des livres suivants :")
+	public void laListeRetourneeContientLEnsembleDesLivresSuivants(List<Map<String, String>> books)
 			throws Exception {
 		ResultActions result = context.getResult().andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
-		String[] uuids = posts.stream().map(map -> map.get("uuid")).toArray(String[]::new);
-		String[] texts = posts.stream().map(map -> map.get("text")).toArray(String[]::new);
+		String[] uuids = books.stream().map(map -> map.get("uuid")).toArray(String[]::new);
+		String[] titles = books.stream().map(map -> map.get("title")).toArray(String[]::new);
 
 		result.andExpect(jsonPath("$[*].uuid", contains(uuids)));
-		result.andExpect(jsonPath("$[*].message", contains(texts)));
+		result.andExpect(jsonPath("$[*].title", contains(titles)));
 	}
 }

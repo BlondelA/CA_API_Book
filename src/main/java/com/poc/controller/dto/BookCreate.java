@@ -7,5 +7,7 @@ import lombok.Data;
 @Data
 public class BookCreate {
 	@NotBlank
-	private String message;
+	private String Title;
+	private String Autor;
+
 }

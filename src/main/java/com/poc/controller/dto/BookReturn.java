@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 public class BookReturn {
 	private UUID uuid;
-	private String message;
+	private String autor;
+	private String title;
 }

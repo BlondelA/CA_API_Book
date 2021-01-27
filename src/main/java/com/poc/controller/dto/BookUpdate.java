@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class BookUpdate {
-	private String message;
+	private String autor;
+	private String title;
 }
