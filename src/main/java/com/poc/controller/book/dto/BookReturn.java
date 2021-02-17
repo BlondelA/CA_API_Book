@@ -9,4 +9,5 @@ public class BookReturn {
 	private UUID uuid;
 	private String title;
 	private String autorUUID;
+	private Double price;
 }

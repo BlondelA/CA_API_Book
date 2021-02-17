@@ -10,5 +10,5 @@ public class BookCreate {
 	private String title;
 	@NotBlank
 	private String autorUUID;
-
+	private Double price;
 }

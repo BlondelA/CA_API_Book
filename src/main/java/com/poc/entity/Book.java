@@ -30,4 +30,7 @@ public class Book {
 
 	@Lob
 	private String autorUUID;
+
+	@Lob
+	private Double price;
 }

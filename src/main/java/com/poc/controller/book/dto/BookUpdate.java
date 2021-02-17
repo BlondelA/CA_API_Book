@@ -6,4 +6,5 @@ import lombok.Data;
 public class BookUpdate {
 	private String title;
 	private String autorUUID;
+	private Double price;
 }
