@@ -71,6 +71,10 @@ public class BookService {
 					.map(Book::getAutorUUID)
 					.filter(not(String::isBlank))
 					.ifPresent(book::setAutorUUID);
+			Optional.of(newBook)
+					.map(Book::getStock)
+					.filter(stock -> stock!=null)
+					.ifPresent(book::setStock);
 			return Optional.of(book)
 					.map(bookDao::save);
 		} catch (EntityNotFoundException e) {

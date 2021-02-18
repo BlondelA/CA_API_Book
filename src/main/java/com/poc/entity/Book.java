@@ -33,4 +33,7 @@ public class Book {
 
 	@Lob
 	private Double price;
+
+	@Lob
+	private int stock;
 }
