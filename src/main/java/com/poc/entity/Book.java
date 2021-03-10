@@ -5,17 +5,12 @@ import java.util.UUID;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Data
-@Entity(name = "books")
+@Entity(name = "book")
 public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -29,7 +24,7 @@ public class Book {
 	private String title;
 
 	@Lob
-	private String autorUUID;
+	private String autor_uuid;
 
 	@Lob
 	private Double price;

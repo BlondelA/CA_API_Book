@@ -1,14 +1,12 @@
 package com.poc.services;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.poc.entity.Autor;
 import org.springframework.stereotype.Service;
 
 import com.poc.dao.BookDao;
@@ -28,9 +26,13 @@ public class BookService {
 	 * Récupère l'ensemble des livres
 	 * @return un Stream de livres
 	 */
-	public Stream<Book> getAllBooks() {
-		return StreamSupport.stream(bookDao.findAll()
-				.spliterator(), false);
+	public List<Book> getAllBooks(){
+//		return StreamSupport.stream(bookDao.findAll().spliterator(), false)
+//				.collect(Collectors.toList());
+		List<Book> books = new ArrayList<>();
+     	bookDao.findAll().forEach(books::add);
+     	System.out.println(books);
+		return books;
 	}
 
 	/**
@@ -68,9 +70,9 @@ public class BookService {
 					.filter(not(String::isBlank))
 					.ifPresent(book::setTitle);
 			Optional.of(newBook)
-					.map(Book::getAutorUUID)
+					.map(Book::getAutor_uuid)
 					.filter(not(String::isBlank))
-					.ifPresent(book::setAutorUUID);
+					.ifPresent(book::setAutor_uuid);
 			Optional.of(newBook)
 					.map(Book::getStock)
 					.filter(stock -> stock!=null)

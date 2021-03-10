@@ -1,5 +1,6 @@
 package com.poc.controller.book.dto;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import lombok.Data;
@@ -8,6 +9,6 @@ import lombok.Data;
 public class BookReturn {
 	private UUID uuid;
 	private String title;
-	private String autorUUID;
-	private Double price;
+	private String autor_uuid;
+	private BigDecimal price;
 }

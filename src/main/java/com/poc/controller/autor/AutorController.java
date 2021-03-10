@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/autors")
+@RequestMapping("/autor")
 public class AutorController {
 	private final AutorService autorService;
 	private final ModelMapper modelMapper;

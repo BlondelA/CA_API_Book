@@ -33,7 +33,7 @@ public class BookDaoStep {
 			var book = new Book();
 			Optional.of("UUID").map(map::get).map(UUID::fromString).ifPresent(book::setUuid);
 			Optional.of("TITLE").map(map::get).ifPresent(book::setTitle);
-			Optional.of("AUTOR").map(map::get).ifPresent(book::setAutorUUID);
+			Optional.of("AUTOR").map(map::get).ifPresent(book::setAutor_uuid);
 			bookDao.save(book);
 		});
 	}

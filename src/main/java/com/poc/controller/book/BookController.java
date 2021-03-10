@@ -23,7 +23,7 @@ import com.poc.entity.Book;
 import com.poc.services.BookService;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/book")
 public class BookController {
 	private final BookService bookService;
 	private final ModelMapper modelMapper;
@@ -44,10 +44,10 @@ public class BookController {
 
 	@GetMapping("")
 	public ResponseEntity<List<BookReturn>> getAllBooks() {
-		List<BookReturn> books = bookService.getAllBooks()
+		List<BookReturn> bookReturns = bookService.getAllBooks().stream()
 				.map(entity -> modelMapper.map(entity, BookReturn.class))
 				.collect(Collectors.toList());
-		return ResponseEntity.ok(books);
+		return ResponseEntity.ok(bookReturns);
 	}
 
 	@GetMapping("/{uuid}")

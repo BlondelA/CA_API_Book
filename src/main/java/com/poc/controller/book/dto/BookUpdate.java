@@ -2,10 +2,12 @@ package com.poc.controller.book.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class BookUpdate {
 	private String title;
-	private String autorUUID;
-	private Double price;
+	private String autor_uuid;
+	private BigDecimal price;
 	private int stock;
 }
