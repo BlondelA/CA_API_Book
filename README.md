@@ -39,3 +39,4 @@ Les problèmes relevés sont :
 - Un bloc commenté qui doit être supprimé (je le garde consciemment.)
 - beaucoup de regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'. (habitude prise à cause des conventions de nommage au travail ou, cette règle a été désactivée)
 
+Je n'ai malheureusement pas réeussi à ajouter SonarQube dirrectement dans IntelliJ..
