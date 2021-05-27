@@ -31,7 +31,7 @@ public class BookService {
 //				.collect(Collectors.toList());
 		List<Book> books = new ArrayList<>();
      	bookDao.findAll().forEach(books::add);
-     	System.out.println(books);
+//     	System.out.println(books);
 		return books;
 	}
 
